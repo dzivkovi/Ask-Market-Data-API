@@ -6,7 +6,14 @@ The Ask Market Data service is a REST API designed to seamlessly interpret and r
 
 ## Data
 
-This API uses a CSV dataset consisting of the Nasdaq-100 stock analytics captured during one trading day. You are responsible for providing your dataset and modifying the `business_logic.py` module to work with your specific data.
+This API utilizes a sample End of Day (EOD) market data dataset for the Nasdaq-100 stocks. It includes key trading information such as trading volume, opening, closing, high, and low prices for each stock at the close of the trading day. The data format is as follows:
+
+```text
+date, symbol, volume, low, high, open, close, last
+2023-05-30, AAPL, 55964401, 176.57, 178.99, 176.96, 177.3, 177.3
+```
+
+You are responsible for providing your dataset and modifying the `business_logic.py` module to work with your specific EOD market data.
 
 ## Natural Language Interface Design
 
