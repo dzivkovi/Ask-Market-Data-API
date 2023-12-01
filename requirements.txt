@@ -1,0 +1,8 @@
+# pip install -r requirements.txt
+# Ensure that pip installs at least the minor version you have specified (the second number),
+# but it would not install a different major version (the first number) which might include breaking changes:
+Flask~=2.1
+google-cloud-logging~=3.5
+requests~=2.31
+gunicorn~=20.1
+python-dotenv
