@@ -10,7 +10,6 @@ Note:
 """
 import logging
 import os
-from datetime import datetime
 # Placeholder for importing an NLP library or API client
 
 def process_market_query(query):
