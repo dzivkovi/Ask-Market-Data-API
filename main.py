@@ -6,13 +6,15 @@ The application provides three routes:
 - / which returns a hello message
 - /api/v1/marketdataquery which processes market data queries in natural language
 """
-
-import logging
 import os
+import uuid
+import logging
 from flask import Flask, request, jsonify
-
 import google.cloud.logging
 from dotenv import load_dotenv
+from langchain.llms.openai import OpenAI
+from langchain.agents.agent_types import AgentType
+from langchain.agents import create_csv_agent
 
 import business_logic
 
@@ -31,6 +33,18 @@ if 'K_SERVICE' in os.environ:
     logging.info("Running on Google Cloud")
 else:
     logging.info("Running locally")
+
+# Make sure you have a correct OPENAI_API_KEY in the environment.
+CSV_FILE_PATH = "data/nasdaq100_eod_data.csv"
+llm = OpenAI(
+    temperature=0, # prevent hallucinations
+    model="text-davinci-003")
+llm_agent = create_csv_agent(
+    llm,
+    CSV_FILE_PATH,
+    verbose=True,
+    agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+)
 
 app = Flask(__name__)
 
@@ -77,9 +91,12 @@ def market_data_query():
     if not query:
         return jsonify({"error": "No query provided"}), 400
 
-    response = business_logic.process_market_query(query)
-    return jsonify({"response": response})
-
+    response = business_logic.process_market_query(query, llm_agent)
+     # TODO: UUID should be tied to the request to peserve chat memory
+    return jsonify({
+        "response_id": uuid.uuid1(),
+        "response": response
+        })
 
 if __name__ == "__main__":
     PORT = int(os.getenv("PORT", '8080'))

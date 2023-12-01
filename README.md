@@ -99,6 +99,50 @@ The service will return the market data requested in the following JSON structur
 }
 ```
 
+### Sample Server Log
+
+The verbose output from the web server demonstrates the containerized deployment in action and offers insights into the effectiveness of the ReAct Prompting technique in processing natural language queries. ReAct Prompting, as detailed in [this guide](https://www.promptingguide.ai/techniques/react), is a method used to enhance the performance of Large Language Models (LLMs). It involves a series of steps where the LLM 'thinks' through a problem, 'acts' by executing a task, and 'observes' the result before forming a final answer.
+
+There are multiple ReAct Prompting techniques; this app uses the [Langchain Zero-shot ReAct Agent](https://python.langchain.com/docs/modules/agents/agent_types/react) to understand both user intents and CSV file data, and to process market data queries efficiently:
+
+```bash
+(.venv) C:\\Ask Market Data API>docker run -e PORT=8080 -p 5000:8080 marketdataquery
+[2023-12-01 20:37:06 +0000] [1] [INFO] Starting gunicorn 20.1.0
+[2023-12-01 20:37:06 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2023-12-01 20:37:06 +0000] [1] [INFO] Using worker: gthread
+[2023-12-01 20:37:06 +0000] [7] [INFO] Booting worker with pid: 7
+INFO:root:Running locally
+INFO:root:Processing market data query: ''microsoft volume''
+
+
+> Entering new AgentExecutor chain...
+Thought: I need to find the volume of Microsoft stock
+Action: python_repl_ast
+Action Input: df[df['symbol'] == 'MSFT']['volume'].values[0]
+Observation: 29503070
+Thought: I now know the final answer
+Final Answer: The volume of Microsoft stock is 29503070.
+
+> Finished chain.
+INFO:root:Query processed. Answer: The volume of Microsoft stock is 29503070.
+INFO:root:Processing market data query: '"Apple close"'
+
+
+> Entering new AgentExecutor chain...
+Thought: I need to find the close value for the symbol AAPL
+Action: python_repl_ast
+Action Input: df[df['symbol'] == 'AAPL']['close']
+Observation: 0    177.3
+Name: close, dtype: float64
+Thought: I now know the final answer
+Final Answer: 177.3
+
+> Finished chain.
+INFO:root:Query processed. Answer: 177.3
+```
+
+These logs showcase the application's capability to parse and execute complex queries about stock market data using a conversational, intuitive approach. This not only enhances the user experience but also demonstrates the power of combining modern NLP techniques with practical applications.
+
 ## Future Directions and Collaboration
 
 The Ask Market Data Service exemplifies the potential of Large Language Models (LLMs) in transforming data analysis. By bringing Generative AI into the realm of CSV and Excel data, this project is just the *beginning* of a broader journey to revolutionize how we interact with data.
