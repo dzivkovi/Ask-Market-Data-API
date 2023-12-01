@@ -1,5 +1,5 @@
 """
-This module contains the business logic for a Flask application that serves as a market data query service.
+This module contains the business logic for a Flask app that serves as a market data query service.
 It includes functions to process natural language market data queries using an LLM agent.
 """
 
@@ -22,7 +22,7 @@ def process_market_query(query, agent):
         str: The response string with the queried market data.
     """
     logging.info("Processing market data query: '%s'", query)
-    
+
     if not query.strip():
         return "No query provided"
 
@@ -51,8 +51,7 @@ if __name__=='__main__':
         agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
     )
 
-    test_query = "What was the volume for Apple today?"
-    logging.info("Test query: '%s'", test_query)
-    query_response = process_market_query(test_query, agent)
+    TEST_QUERY = "What was the volume for Apple today?"
+    logging.info("Test query: '%s'", TEST_QUERY)
+    query_response = process_market_query(TEST_QUERY, agent)
     logging.info("Query response: '%s'", query_response)
-
