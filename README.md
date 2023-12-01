@@ -4,7 +4,7 @@
 
 The Ask Market Data service is a REST API designed to seamlessly interpret and respond to queries about stock market data in natural language. The service is built on the Flask web framework and is equipped to be deployed locally or in a cloud environment, with enhanced support for Google Cloud Platform (GCP) where it was tested.
 
-## Data
+### Data
 
 This API utilizes a sample End of Day (EOD) market data dataset for the Nasdaq-100 stocks. It includes key trading information such as trading volume, opening, closing, high, and low prices for each stock at the close of the trading day. The data format is as follows:
 
@@ -17,11 +17,12 @@ You are responsible for providing your dataset and modifying the `business_logic
 
 ## Natural Language Interface Design
 
-To handle and interpret queries, this service leverages Natural Language Processing (NLP) technologies. As such, the implementation of an appropriate NLP model or service within the `business_logic.py` module is essential for the functional transformation of natural language queries into actionable data responses.
+The Ask Market Data service leverages OpenAI's Large Language Model (LLM) to interpret and respond to natural language queries about market data. Integrated within the `business_logic.py` module, this setup utilizes OpenAI's advanced NLP capabilities for parsing queries and deriving actionable insights from a CSV dataset.
 
-### Customization Note
+### Integration Flexibility
 
-The `business_logic.py` file provided is a skeleton that requires the integration of an NLP service or library. It is recommended to use a modern NLP framework capable of understanding complex queries and fetching relevant market data.
+While currently harnessing OpenAI's LLM, the service is designed with flexibility in mind. It can be adapted to work with other LLM platforms like Google's VertexAI with minor modifications, ensuring the service can evolve with emerging NLP technologies.
+
 
 ## Installation and Setup
 
@@ -99,7 +100,7 @@ The service will return the market data requested in the following JSON structur
 }
 ```
 
-### Sample Server Log
+## Sample Server Log
 
 The verbose output from the web server demonstrates the containerized deployment in action and offers insights into the effectiveness of the ReAct Prompting technique in processing natural language queries. ReAct Prompting, as detailed in [this guide](https://www.promptingguide.ai/techniques/react), is a method used to enhance the performance of Large Language Models (LLMs). It involves a series of steps where the LLM 'thinks' through a problem, 'acts' by executing a task, and 'observes' the result before forming a final answer.
 
