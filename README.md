@@ -91,3 +91,17 @@ The service will return the market data requested in the following JSON structur
     "response": "AAPL’s volume is 1.2M shares"
 }
 ```
+
+## Future Directions and Collaboration
+
+The Ask Market Data Service exemplifies the potential of Large Language Models (LLMs) in transforming data analysis. By bringing Generative AI into the realm of CSV and Excel data, this project is just the *beginning* of a broader journey to revolutionize how we interact with data.
+
+My primary focus is on bridging Generative AI with corporate databases, facilitating SQL query generation and translating results back into plain language. The advancement in LLM technologies can empower users from varied backgrounds to interact with structured datasets through simple, natural language, transcending the traditional barriers of technical expertise:
+
+[![Langchain SQL Agent](assets/sql_usecase.png)](https://python.langchain.com/docs/integrations/toolkits/sql_database)
+
+This endeavor is about more than just creating a tool; it's about opening a gateway to intuitive and accessible data interactions for a wider audience. It's a step towards making data-driven decisions more accessible, reducing the need for specialized SQL knowledge and harnessing technology to democratize data analysis.
+
+As we venture into this new territory, I acknowledge that the journey of turning Proof of Concepts (POCs) into production-ready offerings is still nascent. Much like the early days of internet applications, many Generative AI solutions face challenges with speed, cost, consistency, and security. However, these challenges only fuel my commitment to innovation and improvement.
+
+I warmly invite collaborations from individuals and organizations passionate about the intersection of Generative AI, Data, and User Experience. Let's combine our learnings, experiences, and imagination to push the boundaries of what's possible, crafting solutions that are not only technologically advanced but also secure, efficient, and user-centric.
