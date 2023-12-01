@@ -1,17 +1,15 @@
 """
-This module is a Flask application that serves as a greeting service. 
+This module is a Flask application that serves both as a market data query service. 
 It can be run both locally and on Google Cloud Run. 
 In a cloud environment, it configures a GCP logging client for application logs.
-The application provides two routes: 
+The application provides three routes: 
 - / which returns a hello message
-- /hello/<name> which returns a personalized greeting message
-
-Inspired by https://code.visualstudio.com/docs/python/tutorial-flask
+- /api/v1/marketdataquery which processes market data queries in natural language
 """
 
 import logging
 import os
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 import google.cloud.logging
 from dotenv import load_dotenv
@@ -42,26 +40,43 @@ def home():
     Returns:
         str: A greeting string.
     """
-    logging.debug("Home page request received")
-    server = request.host_url  # Get the server URL
-    return f"Usage: {server}hello/Daniel"
 
-@app.route("/hello/", defaults={'name': None}, methods=["POST", "GET"])
-@app.route("/hello/<name>", methods=["POST", "GET"])
-def hello_there(name):
+    welcome_message = "Welcome to the Ask Market Data service!"
+    logging.debug(welcome_message)
+    return f"""
+    <html>
+        <body>
+            <h1>{welcome_message}</h1>
+
+            <p>This service accepts both GET and POST requests.</p>
+            <H2>Sample GET request</H2>
+                {request.host_url}api/v1/marketdataquery?query='What is stock symbol for Microsoft?'
+            <H2>Sample POST request</H2>
+                curl -X POST -H "Content-Type: application/json" -d '{{"query": "What is the volume for AAPL"}}' {request.host_url}api/v1/marketdataquery
+
+        </body>
+    </html>
     """
-    A route that responds to GET and POST requests with a personalized greeting.
-    Invokes business logic for the greeting. 
 
-    Args:
-        name (str): Name of the person to be greeted.
+# Usage: {server}api/v1/marketdataquery
 
-    Returns:
-        str: A personalized greeting string.
+@app.route("/api/v1/marketdataquery", methods=["POST", "GET"])
+def market_data_query():
     """
-    # do not place business logic in the route functions
-    logging.debug("Hello page request received")
-    return business_logic.greeting(name)
+    Endpoint to handle market data queries in natural language.
+    Accepts both GET and POST requests.
+    """
+    if request.method == "POST":
+        query = request.json.get("query")
+    else:  # GET request
+        query = request.args.get("query")
+
+    if not query:
+        return jsonify({"error": "No query provided"}), 400
+
+    response = business_logic.process_market_query(query)
+    return jsonify({"response": response})
+
 
 if __name__ == "__main__":
     PORT = int(os.getenv("PORT", '8080'))

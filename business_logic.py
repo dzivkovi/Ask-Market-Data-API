@@ -1,53 +1,41 @@
 """
-This module contains the business logic for a Flask application that serves as a greeting service.
-It includes a function to create a personalized greeting using a provided name.
+This module contains the business logic for a Flask application that serves as a greeting service
+and a market data query service. It includes functions to create a personalized greeting and to
+process natural language market data queries.
 
 Note:
-- Business logic goes in here
-- To start VSCode Flask debugger make sure to be in the app.py file
+- Business logic for greeting and market data queries goes in here.
 - To start Flask app from the command line, run:
     python -m flask run --port 5000
 """
 import logging
 import os
-import re
 from datetime import datetime
+# Placeholder for importing an NLP library or API client
 
-def greeting(name):
+def process_market_query(query):
     """
-    Generate a personalized greeting with the provided name and current timestamp.
-    If the name contains any characters that are not letters, the greeting will use "Friend".
+    Process a natural language market data query and return the response.
 
     Args:
-        name (str): Name of the person to be greeted. 
+        query (str): The natural language query.
 
     Returns:
-        str: A personalized greeting string with current date and time.
+        str: The response string with the queried market data.
     """
+    logging.info("Processing market data query: '%s'", query)
+    # Implement logic to process the query and fetch relevant market data
+    # This could involve using an NLP library/service and querying the data
+    # Example:
+    # result = NLPModel.process(query)
+    # data = fetch_market_data(result.symbol, result.query_type)
+    # response = generate_response(data)
 
-    now = datetime.now()
-    formatted_now = now.strftime("%A, %d %B, %Y at %X")
+    # Placeholder response (to be replaced with actual processing logic)
+    response = "Market data response based on the query: " + query
+    return response
 
-    # Filter the name argument to letters only using regular expressions. URL arguments
-    # can contain arbitrary text, so we restrict to safe characters only.
-    if name is not None:
-        match_object = re.match("[a-zA-Z]+", name)
-    else:
-        match_object = None
-
-    logging.info("Name of the person to be greeted: '%s'", name)
-    if match_object:
-        clean_name = match_object.group(0)
-        logging.info("Clean name: '%s'", clean_name)
-    else:
-        clean_name = "Friend"
-        logging.warning("No name found, defaulting to '%s'", clean_name)
-
-    content = "Hello there, " + clean_name + "! It's " + formatted_now
-    logging.debug("Greeting: '%s'", content)
-    return content
-
-# Main function to quickly test the business logic
+# Main function for testing
 if __name__=='__main__':
 
     # Setup logging
@@ -56,7 +44,8 @@ if __name__=='__main__':
     LOG_FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
     logging.basicConfig(level=LOG_LEVEL,format=LOG_FORMAT)
 
-    FIRSTNAME = "Don@van"
-    logging.info("Input name: '%s', greeting: '%s'", FIRSTNAME, greeting(FIRSTNAME))
-    logging.info("Empty sting ('') name greeting: '%s'", greeting(''))
-    logging.info("Missing name greeting: '%s'", greeting(None))
+    # Test the process_market_query function
+    test_query = "What is the volume for AAPL today?"
+    logging.info("Test query: '%s'", test_query)
+    query_response = process_market_query(test_query)
+    logging.info("Query response: '%s'", query_response)
