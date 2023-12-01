@@ -19,15 +19,18 @@ import business_logic
 # Load environment variables
 load_dotenv()
 
-if __name__ != '__main__':
-    # Setup GCP logging
+# Adjust the logging level as per the environment variable
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO').upper()
+logging.basicConfig(level=LOG_LEVEL)
+
+# Check if running on Google Cloud (Cloud Run)
+if 'K_SERVICE' in os.environ:
+    # Set default logging level
     client = google.cloud.logging.Client()
-    # Configure the default logger to use the logging client
-    # By default this captures all logs at INFO level and higher
     client.setup_logging()
-    # Adjust the logging level as per the environment variable
-    LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO').upper()
-    logging.basicConfig(level=LOG_LEVEL)
+    logging.info("Running on Google Cloud")
+else:
+    logging.info("Running locally")
 
 app = Flask(__name__)
 
